@@ -25,14 +25,14 @@ make
 
 echo -- Waiting for executable to be built
 :loopBuild
-IF NOT EXIST OpenGL-StarterKit.exe (
+IF NOT EXIST Skinify.exe (
     timeout /t 1 > nul
     GOTO loopBuild
 )
 
 echo:
 echo Running executable:
-OpenGL-StarterKit.exe
+Skinify.exe
 
 cls
 set /A startup=0
