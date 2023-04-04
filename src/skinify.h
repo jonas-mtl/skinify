@@ -15,12 +15,12 @@ struct Skinify {
     float         skin_shadowOpacity{ 0.5f };
 
 
-    std::string   canvas_srcImageName{};
+    std::string   canvas_srcImagePath{};
     float         canvas_lightIntesity{ 0.5f };
     uint8_t       canvas_yOffset{ 2 };
     uint8_t       canvas_upscaleMultiplier{ 4 };
 
-    Skinify(const char* srcImageName);
+    Skinify(const char* srcImagePath);
 
     Image& generate();
 };

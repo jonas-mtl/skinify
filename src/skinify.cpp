@@ -2,11 +2,12 @@
 
 
 Skinify::Skinify(const char* srcImageName) {
-	canvas_srcImageName = srcImageName;
+	canvas_srcImagePath = srcImageName;
 }
 
 Image& Skinify::generate() {
-    Image canvas(canvas_srcImageName.c_str());
+    Image canvas(canvas_srcImagePath.c_str());
+
 
     // head
     Image head = canvas;

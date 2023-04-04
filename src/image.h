@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <stdint.h>
+#include <iostream>
 
 
 enum ImageType {
@@ -9,12 +10,12 @@ enum ImageType {
 };
 
 struct Image {
-	bool		destruct{ true };
-	uint8_t*	data{ NULL };
-	size_t		size{ 0 };
-	int			channels{};
-	int			w{};
-	int			h{};
+	bool			destruct{ true };
+	uint8_t*		data{ NULL };
+	size_t			size{ 0 };
+	int				channels{};
+	int				w{};
+	int				h{};
 
 	Image(const char* filename);
 	Image(int w, int h, int channels);
