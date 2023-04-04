@@ -10,7 +10,7 @@ if %startup%==0 (
 )
 
 echo -- Configuring CMake
-cmake -DGLFW_BUILD_DOCS=OFF -S .. -B ../out/build -G "MinGW Makefiles" 
+cmake -DGLFW_BUILD_DOCS=OFF -S .. -B ../out/build -G "MinGW Makefiles"
 
 echo -- Waiting for CMake to finish configuring
 :loopConfigure
