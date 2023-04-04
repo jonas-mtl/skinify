@@ -1,5 +1,5 @@
 #include "skinify.h"
-#include "image.h"
+#include "core/image.h"
 
 
 int main()

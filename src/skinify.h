@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stdint.h>
 
-#include "image.h"
+#include "core/image.h"
 
 #define CENTER(canvas, bodyPart) (canvas.w / 2) - (bodyPart.w / 2)
 
