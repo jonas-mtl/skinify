@@ -1,18 +1,24 @@
 #include "skinify.h"
 
 
-Skinify::Skinify(const char* srcImageName) {
+Skinify::Skinify(const char* srcImageName)
+{
 	canvas_srcImagePath = srcImageName;
 }
 
-Image& Skinify::generate() {
+Image& Skinify::generate() 
+{
     Image canvas(canvas_srcImagePath.c_str());
-
 
     // head
     Image head = canvas;
     head.crop(8, 8, 8, 8);
     head.resize(head.w * skin_headScaleMultiplier, head.h * skin_headScaleMultiplier);
+    
+    // head overlay
+    Image headOverlay = canvas;
+    headOverlay.crop(40, 8, 8, 8);
+    headOverlay.resize(headOverlay.w * skin_headScaleMultiplier, headOverlay.h * skin_headScaleMultiplier);
 
     // head side
     Image headSide = canvas;
@@ -62,11 +68,18 @@ Image& Skinify::generate() {
     canvas.colorMask(0.f, 0.f, 0, 0.f);
 
     canvas.overlay(head, (canvas.w / 2) - (head.w / 2) + skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
+
+    if (skin_headOverlay)
+        canvas.overlay(headOverlay, (canvas.w / 2) - (headOverlay.w / 2) + skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
+    
     canvas.overlay(headSide, (canvas.w / 2) - (head.w / 2) - skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
+
     canvas.overlay(body, CENTER(canvas, body), head.h + canvas_yOffset);
+
     canvas.overlay(armR, CENTER(canvas, body) + body.w, head.h + canvas_yOffset);
     canvas.overlay(armL, CENTER(canvas, body) - (body.w / 2), head.h + canvas_yOffset);
     canvas.overlay(armLSide, CENTER(canvas, body) - armL.w * 1.5, head.h + canvas_yOffset);
+
     canvas.overlay(legR, CENTER(canvas, body) + legR.w, head.h + body.h + canvas_yOffset);
     canvas.overlay(legL, CENTER(canvas, body), head.h + body.h + canvas_yOffset);
     canvas.overlay(legLSide, CENTER(canvas, body) - legL.w / 2, head.h + body.h + canvas_yOffset);
@@ -76,7 +89,9 @@ Image& Skinify::generate() {
     canvas.crop((canvas.w - maxDimension) / 2, 0, maxDimension, maxDimension + (canvas_yOffset * 2));
     canvas.resize(canvas.w * canvas_upscaleMultiplier, canvas.h * canvas_upscaleMultiplier);
 
+    //TODO: Fix this stuff somehow
     canvas.destruct = false;
+    canvas.write("output.png");
+
     return canvas;
 }
-

@@ -1,17 +1,14 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <filesystem>
 #include <stdio.h>
 
 #define GL_SILENCE_DEPRECATION
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
+#include "imgui_impl_glfw.h"
+#include "imgui.h"
 
-#include "stb_image_write.h"
-#include "skinify.h"
-#include "core/image.h"
+#include "interface/ui.h"
 
 
 static void glfw_error_callback(int error, const char* description)
@@ -27,11 +24,14 @@ int main(int, char**)
 
     // GL 3.0 + GLSL 130
     const char* glsl_version = "#version 130";
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);
+    glfwWindowHint(GLFW_VISIBLE, GLFW_TRUE);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "Skinify", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(300, 500, "Skinify", NULL, NULL);
     if (window == NULL)
         return 1;
     glfwMakeContextCurrent(window);
@@ -51,15 +51,7 @@ int main(int, char**)
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-
-    if (std::filesystem::exists("./res/fonts/Roboto-Medium.ttf"))
-    {
-        io.Fonts->AddFontFromFileTTF("./res/fonts/Roboto-Medium.ttf", 16.0f);
-    }
-    else
-    {
-        io.Fonts->AddFontDefault();
-    }
+    UI::LoadTheme();
 
     // Our state
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
@@ -72,7 +64,6 @@ int main(int, char**)
         return -1;
     }
 
-
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
@@ -82,38 +73,7 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        // 1. Show the big demo window (Most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
-        {
-            static int headSize = 0.0f;
-            static int counter = 0;
-
-            ImGui::SetNextWindowPos(ImVec2(0, 0));
-            ImGui::SetNextWindowSize(io.DisplaySize);
-
-            bool show_window = true;
-            ImGui::Begin("---", &show_window, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);                          // Create a window called "Hello, world!" and append into it.
-
-            ImGui::Text("Welcome to the skinifier!");               
-
-            ImGui::SliderInt("Head size", &headSize, 1, 3);
-
-            if (ImGui::Button("Click here to skinify"))
-            {
-                Skinify skin("test.png");
-                Image bg("back.png");
-                skin.skin_headScaleMultiplier = headSize;
-                Image skinImg = skin.generate();
-                bg.resize(skinImg.w, skinImg.h);
-                bg.overlay(skinImg, 0, 0);
-
-
-                bg.write("output.png");
-                skinImg.destruct = true;
-            }
-            
-            ImGui::End();
-        }
-
+        UI::Render();
 
         // Rendering
         ImGui::Render();
