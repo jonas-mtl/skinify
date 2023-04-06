@@ -115,7 +115,7 @@ void UI::Render(GLFWwindow* window)
     ImGui::Columns(2, "sliderColumns", false);
     ImGui::SetColumnWidth(0, glfwWinWidth / 2);
     ImGui::Text("Head Size");
-    ImGui::SliderInt("##head", &headSize, 1, 4);
+    ImGui::SliderInt("##head", &headSize, 1, 3);
     ImGui::Spacing();
     ImGui::Text("Shadow Radius");
     ImGui::SliderInt("##shadowRadius", &shadowRadius, 1, 6);
@@ -146,7 +146,7 @@ void UI::Render(GLFWwindow* window)
 
     if (generatedSkinTexture != 0)
     {
-        ImGui::SetCursorPosX((glfwWinWidth - generatedSkinTextureWidth) / 2);
+        ImGui::SetCursorPosX((glfwWinWidth - generatedSkinTextureWidth) / 2 + 10);
         ImGui::Image((void*)(intptr_t)generatedSkinTexture, ImVec2(generatedSkinTextureWidth, generatedSkinTextureHeight));
     }
 

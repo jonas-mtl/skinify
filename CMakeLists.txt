@@ -2,11 +2,17 @@
 cmake_minimum_required(VERSION 3.8)
 project("Skinify")
 
+
 set(CMAKE_CXX_STANDARD 20)
 
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+if(WIN32)
+  if(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_link_options(/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup)
+  endif()
+endif(WIN32)
 
 # Sources
 set(SOURCES 
@@ -22,7 +28,6 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 
 # Fonts
 configure_file(resources/fonts/Roboto-Medium.ttf resources/fonts/Roboto-Medium.ttf COPYONLY)
-
 
 # OpenGL
 find_package(OpenGL REQUIRED)

@@ -12,6 +12,8 @@ namespace Skinify {
 
     void generate(uint8_t skin_headScaleMultiplier, float skin_shadowIntensity, float canvas_lightIntesity, uint8_t skin_shadowRadius, bool skin_headOverlay)
     {
+        if (skin_headScaleMultiplier == 3) skin_headScaleMultiplier = 4;
+
         // head
         Image head = *canvas;
         head.crop(8, 8, 8, 8);
@@ -71,8 +73,7 @@ namespace Skinify {
 
         canvas->overlay(head, (canvas->w / 2) - (head.w / 2) + skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
 
-        if (skin_headOverlay)
-            canvas->overlay(headOverlay, (canvas->w / 2) - (headOverlay.w / 2) + skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
+        if (skin_headOverlay) canvas->overlay(headOverlay, (canvas->w / 2) - (headOverlay.w / 2) + skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
     
         canvas->overlay(headSide, (canvas->w / 2) - (head.w / 2) - skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
 
@@ -88,7 +89,8 @@ namespace Skinify {
 
         uint16_t maxDimension = (head.w + headSide.w) > (head.h + (12 * 2)) ? (head.w + headSide.w) : (head.h + (12 * 2));
 
-        canvas->crop((canvas->w - maxDimension) / 2, 0, maxDimension, maxDimension + (canvas_yOffset * 2));
+        canvas->crop((canvas->w - maxDimension) / 2, 0, maxDimension + (canvas_yOffset * 2), maxDimension + (canvas_yOffset * 2));
+
         canvas->resize(canvas->w * canvas_upscaleMultiplier, canvas->h * canvas_upscaleMultiplier);
 
         canvas->write("output.png");

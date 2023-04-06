@@ -222,7 +222,7 @@ Image& Image::resize(uint32_t sw, uint32_t sh)
 	size = (uint64_t)sw * sh * channels;
 	uint8_t* resizedImage = new uint8_t[size];
 
-	stbir_resize_uint8_generic(data, w, h, 0, resizedImage, sw, sh, 0, channels, 0, 0, STBIR_EDGE_CLAMP, STBIR_FILTER_BOX, STBIR_COLORSPACE_LINEAR, nullptr);
+	stbir_resize_uint8_generic(data, w, h, w * channels, resizedImage, sw, sh, sw * channels, channels, 0, 0, STBIR_EDGE_CLAMP, STBIR_FILTER_BOX, STBIR_COLORSPACE_SRGB, nullptr);
 
 	w = sw;
 	h = sh;
