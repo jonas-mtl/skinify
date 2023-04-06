@@ -8,13 +8,12 @@ set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
 
-# Source
-set(
-    SOURCES 
-		"${SRC_DIR}/main.cpp"
-		"${SRC_DIR}/skinify.cpp"
-		"${SRC_DIR}/core/image.cpp"
-        "${SRC_DIR}/interface/ui.cpp"
+# Sources
+set(SOURCES 
+    "${SRC_DIR}/main.cpp"
+    "${SRC_DIR}/skinify.cpp"
+    "${SRC_DIR}/core/image.cpp"
+    "${SRC_DIR}/interface/ui.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -43,7 +42,6 @@ link_libraries(glfw)
 add_subdirectory(lib/glew)
 target_include_directories(${PROJECT_NAME} PUBLIC lib/glew/include)
 
-
 # ImGui
 set(IMGUI_DIR "${LIB_DIR}/imgui")
 
@@ -70,6 +68,6 @@ target_include_directories(IMGUI
 target_link_libraries(${PROJECT_NAME}
     libglew_static
     OpenGL::GL
-	glfw
     IMGUI
+	glfw
 )
