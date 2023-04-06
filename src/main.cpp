@@ -73,7 +73,7 @@ int main(int, char**)
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        UI::Render();
+        UI::Render(window);
 
         // Rendering
         ImGui::Render();

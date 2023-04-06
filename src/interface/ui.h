@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include <imgui.h>
 
 #include "../core/image.h"
@@ -18,5 +19,5 @@ namespace UI {
 
 	void LoadTheme();
 
-	void Render();
+	void Render(GLFWwindow* window);
 };

@@ -83,11 +83,17 @@ void UI::LoadTheme()
     style->Colors[ImGuiCol_ButtonActive] = primaryColor;
 }
 
-void UI::Render()
+void UI::Render(GLFWwindow* window)
 {
     ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-    static int headSize = 1.0f;
+    int glfwWinWidth{};
+    glfwGetWindowSize(window, &glfwWinWidth, nullptr);
+
+    static int headSize = 1;
+    static float shadowOpacity = 0.7f;
+    static float lightIntensity = 0.7f;
+    static int shadowRadius = 4;
     static bool headOverlay = true;
     static GLuint generatedSkinTexture = 0;
     static uint16_t generatedSkinTextureWidth = 0;
@@ -99,13 +105,34 @@ void UI::Render()
     bool show_window = true;
     ImGui::Begin("---", &show_window, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
+    ImGui::Dummy(ImVec2(10, 10));
     ImGui::PushFont(bigFont);
     ImGui::Text("Welcome to the skinifier!");
     ImGui::PopFont();
+    ImGui::Dummy(ImVec2(20, 20));
 
-    ImGui::SliderInt("Head size", &headSize, 1, 3);
-    ImGui::Checkbox("Head overlay", &headOverlay);
+    //Create grid for sliders
+    ImGui::Columns(2, "sliderColumns", false);
+    ImGui::SetColumnWidth(0, glfwWinWidth / 2);
+    ImGui::Text("Head Size");
+    ImGui::SliderInt("##head", &headSize, 1, 4);
+    ImGui::Spacing();
+    ImGui::Text("Shadow Radius");
+    ImGui::SliderInt("##shadowRadius", &shadowRadius, 1, 6);
 
+    ImGui::NextColumn();
+    ImGui::Text("Shadow Opacity");
+    ImGui::SliderFloat("##sideShadow", &shadowOpacity, 0, 1);
+    ImGui::Spacing();
+    ImGui::Text("Light Intensity");
+    ImGui::SliderFloat("##lightIntensity", &lightIntensity, 0, 1);
+    ImGui::Columns(1);
+
+    ImGui::Dummy(ImVec2(5, 5));
+    ImGui::Checkbox("  Head overlay ", &headOverlay);
+
+    ImGui::Dummy(ImVec2(20, 20));
+    ImGui::SetCursorPosX((glfwWinWidth - ImGui::CalcTextSize("Click here to skinify").x) / 2 - 10);
     if (ImGui::Button("Click here to skinify"))
     {
         Skinify skin("test.png");
@@ -113,6 +140,9 @@ void UI::Render()
         // update skin settings
         skin.skin_headScaleMultiplier = headSize;
         skin.skin_headOverlay = headOverlay;
+        skin.skin_shadowIntensity = shadowOpacity;
+        skin.canvas_lightIntesity = lightIntensity;
+        skin.skin_shadowRadius = shadowRadius;
 
         Image generatedSkin(1, 1, 3);
         generatedSkin = skin.generate();
@@ -123,6 +153,7 @@ void UI::Render()
 
     if (generatedSkinTexture != 0)
     {
+        ImGui::SetCursorPosX((glfwWinWidth - generatedSkinTextureWidth) / 2);
         ImGui::Image((void*)(intptr_t)generatedSkinTexture, ImVec2(generatedSkinTextureWidth, generatedSkinTextureHeight));
     }
 
