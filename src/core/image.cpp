@@ -38,7 +38,7 @@ Image::Image(const Image& img) : Image(img.w, img.h, img.channels)
 
 Image::~Image() 
 {
-	if (destruct) stbi_image_free(data);
+	stbi_image_free(data);
 }
 
 bool Image::read(const char* filename)

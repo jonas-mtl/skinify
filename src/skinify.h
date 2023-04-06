@@ -5,23 +5,20 @@
 
 #include "core/image.h"
 
-#define CENTER(canvas, bodyPart) (canvas.w / 2) - (bodyPart.w / 2)
+#define CENTER(canvas, bodyPart) (canvas->w / 2) - (bodyPart.w / 2)
 
-struct Skinify {
-    uint8_t       skin_headScaleMultiplier{ 3 };
-    uint8_t       skin_shadowRadius{ 4 };
-    float         skin_upperShadowOpacityMultiplier{ 1.25f };
-    float         skin_shadowIntensity{ 0.7f };
-    float         skin_shadowOpacity{ 0.5f };
-    bool          skin_headOverlay{ true };
+namespace Skinify {
 
-    std::string   canvas_srcImagePath{};
-    float         canvas_lightIntesity{ 0.5f };
-    uint8_t       canvas_yOffset{ 2 };
-    uint8_t       canvas_upscaleMultiplier{ 4 };
+    extern Image* canvas;
+    static std::string canvas_srcImagePath{};
+    static uint8_t canvas_yOffset{ 2 };
+    static uint8_t canvas_upscaleMultiplier{ 4 };
+
+    static float skin_upperShadowOpacityMultiplier{ 1.25f };
+    static float skin_shadowOpacity{ 0.5f };
 
 
-    Skinify(const char* srcImagePath);
+    void init(const char* srcImagePath);
 
-    Image& generate();
+    void generate(uint8_t skin_headScaleMultiplier, float skin_shadowIntensity, float canvas_lightIntesity, uint8_t skin_shadowRadius, bool skin_headOverlay);
 };

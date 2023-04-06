@@ -14,6 +14,7 @@ set(SOURCES
     "${SRC_DIR}/skinify.cpp"
     "${SRC_DIR}/core/image.cpp"
     "${SRC_DIR}/interface/ui.cpp"
+    "${SRC_DIR}/interface/imGui.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})

@@ -135,19 +135,12 @@ void UI::Render(GLFWwindow* window)
     ImGui::SetCursorPosX((glfwWinWidth - ImGui::CalcTextSize("Click here to skinify").x) / 2 - 10);
     if (ImGui::Button("Click here to skinify"))
     {
-        Skinify skin("test.png");
+        Skinify::init("test.png");
 
-        // update skin settings
-        skin.skin_headScaleMultiplier = headSize;
-        skin.skin_headOverlay = headOverlay;
-        skin.skin_shadowIntensity = shadowOpacity;
-        skin.canvas_lightIntesity = lightIntensity;
-        skin.skin_shadowRadius = shadowRadius;
+        Skinify::generate(headSize, shadowOpacity, lightIntensity, shadowRadius, headOverlay);
 
-        Image generatedSkin(1, 1, 3);
-        generatedSkin = skin.generate();
-
-        bool imageStatus = LoadImage(generatedSkin, &generatedSkinTexture, &generatedSkinTextureWidth, &generatedSkinTextureHeight);
+        Image& canvasImage = *Skinify::canvas;
+        bool imageStatus = LoadImage(canvasImage, &generatedSkinTexture, &generatedSkinTextureWidth, &generatedSkinTextureHeight);
         IM_ASSERT(imageStatus);
     }
 

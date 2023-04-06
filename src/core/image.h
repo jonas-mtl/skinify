@@ -10,7 +10,6 @@ enum ImageType {
 };
 
 struct Image {
-	bool			destruct{ true };
 	uint8_t*		data{ NULL };
 	size_t			size{ 0 };
 	int				channels{};
