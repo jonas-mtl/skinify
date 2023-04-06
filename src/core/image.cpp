@@ -25,9 +25,9 @@ Image::Image(const char* filename)
 	}
 }
 
-Image::Image(int w, int h, int channels) : w(w), h(h), channels(channels) 
+Image::Image(uint64_t w, uint64_t h, int channels) : w(w), h(h), channels(channels)
 {
-	size = w*h*channels;
+	size = w * h * channels;
 	data = new uint8_t[size];
 }
 
@@ -43,7 +43,7 @@ Image::~Image()
 
 bool Image::read(const char* filename)
 {
-	data = stbi_load(filename, &w, &h, &channels, 0);
+	data = stbi_load(filename,(int*)&w, (int*)&h, &channels, 0);
 	return data != NULL;
 }
 
@@ -136,12 +136,12 @@ Image& Image::overlay(const Image& source, int x, int y)
 	uint8_t* srcPx = {0};
 	uint8_t* dstPx = {0};
 
-	for (int sy = 0; sy < source.h; ++sy) 
+	for (size_t sy = 0; sy < source.h; ++sy) 
 	{
 		if (sy + y < 0) { continue; }
 		else if (sy + y >= h) { break; }
 
-		for (int sx = 0; sx < source.w; ++sx)
+		for (size_t sx = 0; sx < source.w; ++sx)
 		{
 			if (sx + x < 0) { continue; }
 			else if (sx + x >= w) { break; }
@@ -192,15 +192,15 @@ Image& Image::overlay(const Image& source, int x, int y)
 
 Image& Image::crop(uint16_t cx, uint16_t cy, uint16_t cw, uint16_t ch) 
 {
-	size = cw * ch * channels;
+	size = (uint64_t)cw * ch * channels;
 	uint8_t* croppedImage = new uint8_t[size];
 
 	memset(croppedImage, 0, size);
 
-	for (uint16_t y = 0; y < ch; ++y)
+	for (size_t y = 0; y < ch; ++y)
 	{
 		if (y + cy >= h) { break; }
-		for (uint16_t x = 0; x < cw; ++x)
+		for (size_t x = 0; x < cw; ++x)
 		{
 			if (x + cx >= w) { break; }
 			memcpy(&croppedImage[(x + y * cw) * channels], &data[(x + cx + (y + cy) * w) * channels], channels);
@@ -217,8 +217,9 @@ Image& Image::crop(uint16_t cx, uint16_t cy, uint16_t cw, uint16_t ch)
 	return *this;
 }
 
-Image& Image::resize(uint16_t sw, uint16_t sh) {
-	size = sw * sh * channels;
+Image& Image::resize(uint32_t sw, uint32_t sh)
+{
+	size = (uint64_t)sw * sh * channels;
 	uint8_t* resizedImage = new uint8_t[size];
 
 	stbir_resize_uint8_generic(data, w, h, 0, resizedImage, sw, sh, 0, channels, 0, 0, STBIR_EDGE_CLAMP, STBIR_FILTER_BOX, STBIR_COLORSPACE_LINEAR, nullptr);
