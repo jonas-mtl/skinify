@@ -8,6 +8,7 @@ if %startup%==0 (
     set /p USERINP=[ENTER] to build and run again...
     if defined userinp (cls)
 )
+cls
 
 echo -- Configuring CMake
 cmake -DGLFW_BUILD_DOCS=OFF -S .. -B ../out/build -G "MinGW Makefiles"
@@ -34,7 +35,6 @@ echo:
 echo Running executable:
 Skinify.exe
 
-cls
 set /A startup=0
 cd ..
 GOTO dev
