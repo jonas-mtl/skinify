@@ -1,7 +1,8 @@
-#include "ui.hpp"
+#include "ImGui.hpp"
+#include "Ui.hpp"
 
 
-bool UI::LoadImage(Image& imageSrc, GLuint* imageOut, uint16_t* widthOut, uint16_t* heightOut)
+bool UI::LoadImage(Image* imageSrc, GLuint* imageOut, uint16_t* widthOut, uint16_t* heightOut)
 {
     // Create texture identifier
     GLuint imageTexture;
@@ -18,11 +19,11 @@ bool UI::LoadImage(Image& imageSrc, GLuint* imageOut, uint16_t* widthOut, uint16
 #if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
     glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 #endif
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageSrc._w, imageSrc._h, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageSrc.p_data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageSrc->_w, imageSrc->_h, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageSrc->p_data);
 
     *imageOut = imageTexture;
-    *widthOut = imageSrc._w;
-    *heightOut = imageSrc._h;
+    *widthOut = imageSrc->_w;
+    *heightOut = imageSrc->_h;
 
     return true;
 }
@@ -85,54 +86,64 @@ void UI::LoadTheme()
 
 void UI::Render(GLFWwindow* window)
 {
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    static int headSize{ 1 };
+    static float shadowOpacity{ 0.7f };
+    static float lightIntensity{ 0.7f };
+    static int shadowRadius{ 4 };
+    static bool headOverlay{ true };
+
+    static GLuint generatedSkinTexture{};
+    static uint16_t generatedSkinTextureWidth{};
+    static uint16_t generatedSkinTextureHeight{};
+
+    static GLuint bannerTexture = 0;
+    static uint16_t bannerTextureWidth = 0;
+    static uint16_t bannerTextureHeight = 0;
+
+    ImGuiIO& io = ImGui::GetIO();
 
     int glfwWinWidth{};
     glfwGetWindowSize(window, &glfwWinWidth, nullptr);
-
-    static int headSize = 1;
-    static float shadowOpacity = 0.7f;
-    static float lightIntensity = 0.7f;
-    static int shadowRadius = 4;
-    static bool headOverlay = true;
-    static GLuint generatedSkinTexture = 0;
-    static uint16_t generatedSkinTextureWidth = 0;
-    static uint16_t generatedSkinTextureHeight = 0;
 
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(io.DisplaySize);
 
     bool show_window = true;
-    ImGui::Begin("---", &show_window, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+    ImGui::Begin("##mainWnd", &show_window, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
-    ImGui::Dummy(ImVec2(10, 10));
-    ImGui::PushFont(bigFont);
-    ImGui::Text("Welcome to the skinifier!");
-    ImGui::PopFont();
-    ImGui::Dummy(ImVec2(20, 20));
+    UI::LoadImage(Interface::getBannerImage(), &bannerTexture, &bannerTextureWidth, &bannerTextureHeight);
+    ImGui::Image((void*)(intptr_t)bannerTexture, ImVec2(bannerTextureWidth, bannerTextureHeight));
 
-    //Create grid for sliders
+    // grid for sliders
+    size_t globalLeftMargin{ 23 };
     ImGui::Columns(2, "sliderColumns", false);
-    ImGui::SetColumnWidth(0, glfwWinWidth / 2);
-    ImGui::Text("Head Size");
-    ImGui::SliderInt("##head", &headSize, 1, 3);
+    ImGui::SetColumnWidth(0, (float)glfwWinWidth / 2);
+
+    ImGui::TextCustom("Head Size", ImVec2(globalLeftMargin, ImGui::GetCursorPosY()));
+    ImGui::SliderIntCustom("##head", &headSize, 1, 4, ImVec2(globalLeftMargin, ImGui::GetCursorPosY()));
+
     ImGui::Spacing();
-    ImGui::Text("Shadow Radius");
-    ImGui::SliderInt("##shadowRadius", &shadowRadius, 1, 6);
+    ImGui::TextCustom("Light Intensity", ImVec2(globalLeftMargin, ImGui::GetCursorPosY()));
+    ImGui::SliderFloatCustom("##lightIntensity", &lightIntensity, 0, 1, ImVec2(globalLeftMargin, ImGui::GetCursorPosY()));
 
     ImGui::NextColumn();
-    ImGui::Text("Shadow Opacity");
-    ImGui::SliderFloat("##sideShadow", &shadowOpacity, 0, 1);
+    ImGui::TextCustom("Shadow Opacity", ImVec2((float)(glfwWinWidth / 2) + globalLeftMargin, ImGui::GetCursorPosY()));
+    ImGui::SliderFloatCustom("##sideShadow", &shadowOpacity, 0, 1, ImVec2((float)(glfwWinWidth / 2) + globalLeftMargin, ImGui::GetCursorPosY()));
+
     ImGui::Spacing();
-    ImGui::Text("Light Intensity");
-    ImGui::SliderFloat("##lightIntensity", &lightIntensity, 0, 1);
+    ImGui::TextCustom("Shadow Radius", ImVec2((float)(glfwWinWidth / 2) + globalLeftMargin, ImGui::GetCursorPosY()));
+    ImGui::SliderIntCustom("##shadowRadius", &shadowRadius, 1, 6, ImVec2((float)(glfwWinWidth / 2) + globalLeftMargin, ImGui::GetCursorPosY()));
+
     ImGui::Columns(1);
 
     ImGui::Dummy(ImVec2(5, 5));
-    ImGui::Checkbox("  Head overlay ", &headOverlay);
+    ImGui::SetCursorPosX(globalLeftMargin);
+    ImGui::Checkbox("Head overlay ", &headOverlay);
 
     ImGui::Dummy(ImVec2(20, 20));
     ImGui::SetCursorPosX((glfwWinWidth - ImGui::CalcTextSize("Click here to skinify").x) / 2 - 10);
+
+    // generate skinified image
     if (ImGui::Button("Click here to skinify"))
     {
         Skinify::init("test.png");
@@ -140,13 +151,14 @@ void UI::Render(GLFWwindow* window)
         Skinify::generate(headSize, shadowOpacity, lightIntensity, shadowRadius, headOverlay);
 
         Image& canvasImage = *Skinify::canvas;
-        bool imageStatus = LoadImage(canvasImage, &generatedSkinTexture, &generatedSkinTextureWidth, &generatedSkinTextureHeight);
+        bool imageStatus = LoadImage(&canvasImage, &generatedSkinTexture, &generatedSkinTextureWidth, &generatedSkinTextureHeight);
         IM_ASSERT(imageStatus);
     }
 
+    // display generated image
     if (generatedSkinTexture != 0)
     {
-        ImGui::SetCursorPosX((glfwWinWidth - generatedSkinTextureWidth) / 2 + 10);
+        ImGui::SetCursorPosX((float)(glfwWinWidth - generatedSkinTextureWidth) / 2 + 8);
         ImGui::Image((void*)(intptr_t)generatedSkinTexture, ImVec2(generatedSkinTextureWidth, generatedSkinTextureHeight));
     }
 

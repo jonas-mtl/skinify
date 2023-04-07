@@ -16,18 +16,20 @@ endif(WIN32)
 
 # Sources
 set(SOURCES 
-    "${SRC_DIR}/main.cpp"
-    "${SRC_DIR}/skinify.cpp"
-    "${SRC_DIR}/core/image.cpp"
-    "${SRC_DIR}/interface/ui.cpp"
-    "${SRC_DIR}/interface/imGui.cpp"
+    "${SRC_DIR}/Main.cpp"
+    "${SRC_DIR}/core/Skinify.cpp"
+    "${SRC_DIR}/core/Image.cpp"
+    "${SRC_DIR}/interface/Ui.cpp"
+    "${SRC_DIR}/interface/ImGui.cpp"
+    "${SRC_DIR}/interface/ImGui-Custom.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 
-# Fonts
+# Resources
 configure_file(resources/fonts/Roboto-Medium.ttf resources/fonts/Roboto-Medium.ttf COPYONLY)
+configure_file(resources/images/banner.png resources/images/banner.png COPYONLY)
 
 # OpenGL
 find_package(OpenGL REQUIRED)

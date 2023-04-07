@@ -1,4 +1,4 @@
-#include "interface/imGui.hpp"
+#include "interface/ImGui.hpp"
 
 int main(int, char**)
 {

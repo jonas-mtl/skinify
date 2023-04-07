@@ -1,8 +1,9 @@
 #pragma once
 
+#include <cmath>
+#include <iostream>
 #include <cstdio>
 #include <stdint.h>
-#include <iostream>
 
 
 enum ImageType 

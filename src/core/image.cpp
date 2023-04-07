@@ -1,5 +1,4 @@
-#include <cmath>
-#include <iostream>
+#include "Image.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
@@ -7,11 +6,9 @@
 #define STBIR_FLAG_NEAREST_NEIGHBOR
 #define BYTE_BOUND(value) value < 0 ? 0 : (value > 255 ? 255 : value)
 
-#include "image.hpp"
 #include "stb_image.h"
 #include "stb_image_write.h"
 #include "stb_image_resize.h"
-
 
 Image::Image(const char* filename)
 {
@@ -222,8 +219,26 @@ Image& Image::resize(uint32_t sw, uint32_t sh)
 	_size = (uint64_t)sw * sh * _channels;
 	uint8_t* resizedImage = new uint8_t[_size];
 
-	stbir_resize_uint8_generic(p_data, _w, _h, _w * _channels, resizedImage, sw, sh, sw * _channels, _channels, 0, 0, STBIR_EDGE_CLAMP, STBIR_FILTER_BOX, STBIR_COLORSPACE_SRGB, nullptr);
+	if (_channels > 3)
+	{
+		// Convert image to premultiplied alpha to prevent alpha glitches
+		for (size_t  y{ 0 - _channels * _w }; y < (_channels * _w); y += _channels * _w)
+		{
+			for (int x = 0; x < _w * _channels; x += _channels)
+			{
+				p_data[y + x] *= p_data[y + x + 3];
+				p_data[y + x + 1] *= p_data[y + x + 3];
+				p_data[y + x + 2] *= p_data[y + x + 3];
+			}
+		}
 
+		stbir_resize_uint8_generic(p_data, _w, _h, _w * _channels, resizedImage, sw, sh, sw * _channels, _channels, 0, STBIR_FLAG_ALPHA_PREMULTIPLIED, STBIR_EDGE_CLAMP, STBIR_FILTER_BOX, STBIR_COLORSPACE_SRGB, nullptr);
+	}
+	else
+	{
+		stbir_resize_uint8_generic(p_data, _w, _h, _w * _channels, resizedImage, sw, sh, sw * _channels, _channels, 0, 0, STBIR_EDGE_CLAMP, STBIR_FILTER_BOX, STBIR_COLORSPACE_SRGB, nullptr);
+	}
+	
 	_w = sw;
 	_h = sh;
 
