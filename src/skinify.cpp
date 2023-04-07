@@ -1,8 +1,9 @@
-#include "skinify.h"
+#include "skinify.hpp"
 
-namespace Skinify {
+
+namespace Skinify 
+{
     Image* canvas = nullptr;
-
 
     void init(const char* srcImageName)
     {

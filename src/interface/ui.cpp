@@ -1,4 +1,4 @@
-#include "ui.h"
+#include "ui.hpp"
 
 
 bool UI::LoadImage(Image& imageSrc, GLuint* imageOut, uint16_t* widthOut, uint16_t* heightOut)

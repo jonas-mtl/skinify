@@ -7,7 +7,7 @@
 #define STBIR_FLAG_NEAREST_NEIGHBOR
 #define BYTE_BOUND(value) value < 0 ? 0 : (value > 255 ? 255 : value)
 
-#include "image.h"
+#include "image.hpp"
 #include "stb_image.h"
 #include "stb_image_write.h"
 #include "stb_image_resize.h"

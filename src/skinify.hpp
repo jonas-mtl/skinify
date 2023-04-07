@@ -3,12 +3,13 @@
 #include <iostream>
 #include <stdint.h>
 
-#include "core/image.h"
+#include "core/image.hpp"
 
 #define CENTER(canvas, bodyPart) (canvas->w / 2) - (bodyPart.w / 2)
 
-namespace Skinify {
 
+namespace Skinify 
+{
     extern Image* canvas;
     static std::string canvas_srcImagePath{};
     static uint8_t canvas_yOffset{ 2 };

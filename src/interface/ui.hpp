@@ -5,9 +5,8 @@
 #include <GLFW/glfw3.h>
 #include <imgui.h>
 
-#include "../core/image.h"
-#include "../core/image.h"
-#include "../skinify.h"
+#include "../core/image.hpp"
+#include "../skinify.hpp"
 
 
 namespace UI {

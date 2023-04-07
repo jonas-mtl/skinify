@@ -4,7 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 
-#include "ui.h"
+#include "ui.hpp"
 
 namespace Interface
 {
