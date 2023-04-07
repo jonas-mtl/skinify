@@ -18,11 +18,11 @@ bool UI::LoadImage(Image& imageSrc, GLuint* imageOut, uint16_t* widthOut, uint16
 #if defined(GL_UNPACK_ROW_LENGTH) && !defined(__EMSCRIPTEN__)
     glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 #endif
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageSrc.w, imageSrc.h, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageSrc.data);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imageSrc._w, imageSrc._h, 0, GL_RGBA, GL_UNSIGNED_BYTE, imageSrc.p_data);
 
     *imageOut = imageTexture;
-    *widthOut = imageSrc.w;
-    *heightOut = imageSrc.h;
+    *widthOut = imageSrc._w;
+    *heightOut = imageSrc._h;
 
     return true;
 }

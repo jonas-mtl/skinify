@@ -9,7 +9,8 @@
 #include "../skinify.hpp"
 
 
-namespace UI {
+namespace UI 
+{
 	inline ImGuiStyle* style;
 	inline ImFont* bigFont;
 

@@ -5,16 +5,19 @@
 #include <iostream>
 
 
-enum ImageType {
+enum ImageType 
+{
 	PNG, JPG, BMP, TGA
 };
 
-struct Image {
-	uint8_t*		data{ NULL };
-	size_t			size{ 0 };
-	int				channels{};
-	uint64_t				w{};
-	uint64_t				h{};
+struct Image 
+{
+	uint8_t*		p_data{ NULL };
+	size_t			_size{ 0 };
+	int				_channels{};
+	uint64_t		_w{};
+	uint64_t		_h{};
+
 
 	Image(const char* filename);
 	Image(uint64_t w, uint64_t h, int channels);

@@ -5,7 +5,7 @@
 
 #include "core/image.hpp"
 
-#define CENTER(canvas, bodyPart) (canvas->w / 2) - (bodyPart.w / 2)
+#define CENTER(canvas, bodyPart) (canvas->_w / 2) - (bodyPart._w / 2)
 
 
 namespace Skinify 
