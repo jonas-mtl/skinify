@@ -19,7 +19,7 @@ namespace Skinify
     static float skin_shadowOpacity{ 0.5f };
 
 
-    void init(const char* srcImagePath);
+    bool load(const char* srcImagePath);
 
     void generate(uint8_t skin_headScaleMultiplier, float skin_shadowIntensity, float canvas_lightIntesity, uint8_t skin_shadowRadius, bool skin_headOverlay);
 };

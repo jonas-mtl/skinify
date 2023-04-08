@@ -15,10 +15,11 @@ Image::Image(const char* filename)
 	if (read(filename))
 	{
 		_size = _w * _h * _channels;
+		_status = true;
 	}
 	else
 	{
-		printf("Failed to read %s\n", filename);
+		_status = false;
 	}
 }
 

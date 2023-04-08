@@ -5,10 +5,12 @@ namespace Skinify
 {
     Image* canvas = nullptr;
 
-    void init(const char* srcImageName)
+    bool load(const char* srcImageName)
     {
         canvas = new Image(srcImageName);
 	    canvas_srcImagePath = srcImageName;
+
+        return canvas->_status == false ? false : true;
     }
 
     void generate(uint8_t skin_headScaleMultiplier, float skin_shadowIntensity, float canvas_lightIntesity, uint8_t skin_shadowRadius, bool skin_headOverlay)

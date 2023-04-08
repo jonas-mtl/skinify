@@ -17,7 +17,8 @@ bool ImGui::SliderIntCustom(const char* label, int* v, int v_min, int v_max, ImV
 	return SliderScalar(label, ImGuiDataType_S32, v, &v_min, &v_max);
 }
 
-void ImGui::TextCustom(const char* fmt, ImVec2 cursorPos, ...) {
+void ImGui::TextCustom(const char* fmt, ImVec2 cursorPos, ...) 
+{
 	va_list args;
 	va_start(args, fmt);
 	ImGui::SetCursorPos(cursorPos);

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <filesystem>
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <cstring>
 #include <imgui.h>
 
 #include "../core/Image.hpp"

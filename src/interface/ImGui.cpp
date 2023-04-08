@@ -1,13 +1,13 @@
 #include "ImGui.hpp"
 
 
-static void glfw_error_callback(int error, const char* description)
-{
-    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
-}
-
 namespace Interface
 {
+    void glfw_error_callback(int error, const char* description)
+    {
+        fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+    }
+
     bool Render()
     {
         glfwSetErrorCallback(glfw_error_callback);
@@ -45,7 +45,7 @@ namespace Interface
         // Load banner image
         bannerImage = nullptr;
         bannerImage = new Image("./resources/images/banner.png");
-        std::cout << (bannerImage->_w / (windowWidth));
+
         bannerImage->resize(windowWidth, (bannerImage->_h / (bannerImage->_w / (windowWidth))));
 
         UI::LoadTheme();

@@ -18,7 +18,7 @@ struct Image
 	int				_channels{};
 	uint64_t		_w{};
 	uint64_t		_h{};
-
+	bool			_status{ false };
 
 	Image(const char* filename);
 	Image(uint64_t w, uint64_t h, int channels);
