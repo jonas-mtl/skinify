@@ -15,10 +15,21 @@
 
 ## ⚡️ Features
 - Create your own skin thingy with only one click
-- Poorly written code & bugs :)
 - Customize:
   - [x] Head size
   - [x] Shadow & Light appearance
   
-## 📖 Screenshot
-<img src="https://cdn.discordapp.com/attachments/783393120440156185/1093643905230192780/Capture.PNG" alt="Screenshot" />
+## 🖥 Preview
+<img src="./resources/images/preview.png" alt="Screenshot" />
+
+---
+
+## ⭐️ Made by Jonas#1713
+
+### If you want to say **thank you** or/and support active development of this wonderful project:
+
+- Add a **[GitHub Star](https://github.com/jonas-mtl/Skinify/)** to the project.
+- Share with your friends if you like this project.
+- Add me on Discord for feedback & questions
+
+<a href="https://www.producthunt.com/posts/create-go-app?utm_source=badge-review&utm_medium=badge&utm_souce=badge-create-go-app#discussion-body" target="_blank"><img src="https://discord.c99.nl/widget/theme-3/783252406753689601.png" alt="Discord Profile"  /></a>
