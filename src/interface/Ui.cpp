@@ -117,35 +117,36 @@ namespace UI
 
         size_t globalLeftMargin{ 23 };
 
-        ImGui::TextCustom("Skin file path:", ImVec2(globalLeftMargin, GetCursorPosY()));
+        ImGui::TextCustom("Skin file path:", globalLeftMargin);
         ImGui::SetCursorPosX(globalLeftMargin);
         ImGui::InputText("##srcPath", srcPathBuffer, 50);
+
         if (strcmp(srcPathBuffer, srcPath) != 0)
         {
-            std::cout << "changed";
             imgLoaded = Skinify::load(srcPathBuffer);
             strcpy(srcPath, srcPathBuffer);
         }
+
         ImGui::Spacing();
 
         // grid for sliders
         ImGui::Columns(2, "sliderColumns", false);
         ImGui::SetColumnWidth(0, (float)glfwWinWidth / 2);
 
-        ImGui::TextCustom("Head Size", ImVec2(globalLeftMargin, GetCursorPosY()));
-        ImGui::SliderIntCustom("##head", &headSize, 1, 4, ImVec2(globalLeftMargin, GetCursorPosY()));
+        ImGui::TextCustom("Head Size", globalLeftMargin);
+        ImGui::SliderIntCustom("##head", &headSize, 1, 4, globalLeftMargin);
 
         ImGui::Spacing();
-        ImGui::TextCustom("Light Intensity", ImVec2(globalLeftMargin, GetCursorPosY()));
-        ImGui::SliderFloatCustom("##lightIntensity", &lightIntensity, 0, 1, ImVec2(globalLeftMargin, GetCursorPosY()));
+        ImGui::TextCustom("Light Intensity", globalLeftMargin);
+        ImGui::SliderFloatCustom("##lightIntensity", &lightIntensity, 0, 1, globalLeftMargin);
 
         ImGui::NextColumn();
-        ImGui::TextCustom("Shadow Opacity", ImVec2((float)(glfwWinWidth / 2) + globalLeftMargin, GetCursorPosY()));
-        ImGui::SliderFloatCustom("##sideShadow", &shadowOpacity, 0, 1, ImVec2((float)(glfwWinWidth / 2) + globalLeftMargin, GetCursorPosY()));
+        ImGui::TextCustom("Shadow Opacity", (float)(glfwWinWidth / 2) + globalLeftMargin);
+        ImGui::SliderFloatCustom("##sideShadow", &shadowOpacity, 0, 1, (float)(glfwWinWidth / 2) + globalLeftMargin);
 
         ImGui::Spacing();
-        ImGui::TextCustom("Shadow Radius", ImVec2((float)(glfwWinWidth / 2) + globalLeftMargin, GetCursorPosY()));
-        ImGui::SliderIntCustom("##shadowRadius", &shadowRadius, 1, 6, ImVec2((float)(glfwWinWidth / 2) + globalLeftMargin, GetCursorPosY()));
+        ImGui::TextCustom("Shadow Radius", (float)(glfwWinWidth / 2) + globalLeftMargin);
+        ImGui::SliderIntCustom("##shadowRadius", &shadowRadius, 1, 6, (float)(glfwWinWidth / 2) + globalLeftMargin);
 
         ImGui::Columns(1);
 
