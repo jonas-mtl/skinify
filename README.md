@@ -30,6 +30,6 @@
 
 - Add a **[GitHub Star](https://github.com/jonas-mtl/Skinify/)** to the project.
 - Share with your friends if you like this project.
-- Add me on Discord for feedback & questions
+- Add me on Discord for feedback & questions - Jonas#1713 :)
 
-<a href="https://www.producthunt.com/posts/create-go-app?utm_source=badge-review&utm_medium=badge&utm_souce=badge-create-go-app#discussion-body" target="_blank"><img src="https://discord.c99.nl/widget/theme-3/783252406753689601.png" alt="Discord Profile"  /></a>
+<a href="https://www.buymeacoffee.com/jonas.mtl"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=jonas.mtl&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
