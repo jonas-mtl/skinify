@@ -15,7 +15,7 @@ namespace Interface
 {
 	static Image* bannerImage;
 
-	Image* getBannerImage();
 	bool Render();
+	Image* getBannerImage();
 	void glfw_error_callback(int error, const char* description);
 }

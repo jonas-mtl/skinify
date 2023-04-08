@@ -13,7 +13,7 @@ namespace Skinify
         return canvas->_status == false ? false : true;
     }
 
-    void generate(uint8_t skin_headScaleMultiplier, float skin_shadowIntensity, float canvas_lightIntesity, uint8_t skin_shadowRadius, bool skin_headOverlay)
+    void generate(uint8_t skin_headScaleMultiplier, float skin_shadowIntensity, float canvas_lightIntesity, uint8_t skin_shadowRadius, bool skin_headOverlay, const char* outputFileName)
     {
         // head
         Image head = *canvas;
@@ -102,6 +102,6 @@ namespace Skinify
 
         canvas->resize(canvas->_w * canvas_upscaleMultiplier, canvas->_h * canvas_upscaleMultiplier);
 
-        canvas->write("output.png");
+        canvas->write(outputFileName);
     }
 }

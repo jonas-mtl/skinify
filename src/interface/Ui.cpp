@@ -56,7 +56,7 @@ namespace UI
     bool LoadImage(Image* imageSrc, GLuint* imageOut, uint16_t* widthOut, uint16_t* heightOut)
     {
         // Create texture identifier
-        GLuint imageTexture;
+        GLuint imageTexture{};
         glGenTextures(1, &imageTexture);
         glBindTexture(GL_TEXTURE_2D, imageTexture);
 
@@ -93,13 +93,17 @@ namespace UI
         static uint16_t generatedSkinTextureWidth{};
         static uint16_t generatedSkinTextureHeight{};
 
-        static GLuint bannerTexture = 0;
-        static uint16_t bannerTextureWidth = 0;
-        static uint16_t bannerTextureHeight = 0;
+        static GLuint bannerTexture{};
+        static uint16_t bannerTextureWidth{};
+        static uint16_t bannerTextureHeight{};
 
+        static bool startUp{ true };
         static bool imgLoaded{ false };
+        static bool outputCheck{ false };
+
         static char srcPath[50]{};
         static char srcPathBuffer[50]{};
+        static char outPath[50]{ "output.png" };
 
         ImGuiIO& io = ImGui::GetIO();
 
@@ -112,7 +116,7 @@ namespace UI
         bool show_window = true;
         ImGui::Begin("##mainWnd", &show_window, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
-        LoadImage(Interface::getBannerImage(), &bannerTexture, &bannerTextureWidth, &bannerTextureHeight);
+        if (startUp) LoadImage(Interface::getBannerImage(), &bannerTexture, &bannerTextureWidth, &bannerTextureHeight);
         ImGui::Image((void*)(intptr_t)bannerTexture, ImVec2(bannerTextureWidth, bannerTextureHeight));
 
         size_t globalLeftMargin{ 23 };
@@ -128,6 +132,15 @@ namespace UI
         }
 
         ImGui::Spacing();
+
+        ImGui::TextCustom("Output file path:", globalLeftMargin);
+        ImGui::SetCursorPosX(globalLeftMargin);
+        ImGui::InputText("##outPath", outPath, 50);
+
+        outputCheck = std::string(outPath).substr(strlen(outPath) - 4) == ".png";
+
+        ImGui::Spacing();
+
 
         // grid for sliders
         ImGui::Columns(2, "sliderColumns", false);
@@ -155,15 +168,15 @@ namespace UI
         ImGui::Checkbox("Head overlay ", &headOverlay);
 
         ImGui::Dummy(ImVec2(20, 20));
-        ImGui::SetCursorPosX((glfwWinWidth - ImGui::CalcTextSize("Click here to skinify").x) / 2 - 10);
+        ImGui::SetCursorPosX((glfwWinWidth - ImGui::CalcTextSize(" - Click here to skinify - ").x) / 2 - 9);
 
         
-        if (!imgLoaded) ImGui::BeginDisabled();
+        if (!imgLoaded || !outputCheck) ImGui::BeginDisabled();
 
         // generate skinified image
         if (ImGui::Button(" - Click here to Skinify - "))
         {
-            Skinify::generate(headSize, shadowOpacity, lightIntensity, shadowRadius, headOverlay);
+            Skinify::generate(headSize, shadowOpacity, lightIntensity, shadowRadius, headOverlay, outPath);
 
             Image& canvasImage = *Skinify::canvas;
             bool imageStatus = LoadImage(&canvasImage, &generatedSkinTexture, &generatedSkinTextureWidth, &generatedSkinTextureHeight);
@@ -171,7 +184,7 @@ namespace UI
             strcpy(srcPath, "-");
 
         }
-        if (!imgLoaded) ImGui::EndDisabled();
+        if (!imgLoaded || !outputCheck) ImGui::EndDisabled();
 
         // display generated image
         if (generatedSkinTexture != 0)
@@ -180,6 +193,7 @@ namespace UI
             ImGui::Image((void*)(intptr_t)generatedSkinTexture, ImVec2(generatedSkinTextureWidth, generatedSkinTextureHeight));
         }
 
+        startUp = false;
         ImGui::End();
     }
 }

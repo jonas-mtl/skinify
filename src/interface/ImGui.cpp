@@ -24,7 +24,7 @@ namespace Interface
 
         // Create window with graphics context
         int windowWidth{ 300 };
-        GLFWwindow* window = glfwCreateWindow(windowWidth, 560, "Skinify", NULL, NULL);
+        GLFWwindow* window = glfwCreateWindow(windowWidth, 665, "Skinify", NULL, NULL);
         if (window == NULL)
             return false;
         glfwMakeContextCurrent(window);
@@ -47,6 +47,7 @@ namespace Interface
         bannerImage = new Image("./resources/images/banner.png");
 
         bannerImage->resize(windowWidth, (bannerImage->_h / (bannerImage->_w / (windowWidth))));
+
 
         UI::LoadTheme();
 

@@ -21,5 +21,5 @@ namespace Skinify
 
     bool load(const char* srcImagePath);
 
-    void generate(uint8_t skin_headScaleMultiplier, float skin_shadowIntensity, float canvas_lightIntesity, uint8_t skin_shadowRadius, bool skin_headOverlay);
+    void generate(uint8_t skin_headScaleMultiplier, float skin_shadowIntensity, float canvas_lightIntesity, uint8_t skin_shadowRadius, bool skin_headOverlay, const char* outputFileName);
 };
