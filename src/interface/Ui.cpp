@@ -33,19 +33,16 @@ namespace UI
 
         style = &ImGui::GetStyle();
 
-        style->ChildRounding = 6;
-        style->FrameRounding = 5;
+        style->FrameRounding = 6;
 
         ImVec4 primaryColor(157.0f / 255.0f, 126.0f / 255.0f, 81.0f / 255.0f, 1.0f);
         ImVec4 primaryColorHover(185.0f / 255.0f, 149.0f / 255.0f, 96.0f / 255.0f, 1.0f);
         ImVec4 primaryColorHoverBG(185.0f / 255.0f, 149.0f / 255.0f, 96.0f / 255.0f, 0.15f);
 
-        style->Colors[ImGuiCol_TextDisabled] = ImVec4(0.60f, 0.60f, 0.60f, 1.00f);
-        style->Colors[ImGuiCol_WindowBg] = ImVec4(0.059f, 0.059f, 0.059f, 1.00f);
         style->Colors[ImGuiCol_FrameBg] = ImVec4(0.00f, 0.00f, 0.01f, 1.00f);
         style->Colors[ImGuiCol_FrameBgHovered] = primaryColorHoverBG;
         style->Colors[ImGuiCol_FrameBgActive] = primaryColorHoverBG;
-        style->Colors[ImGuiCol_CheckMark] = ImVec4(0.90f, 0.90f, 0.90f, 0.83f);
+        style->Colors[ImGuiCol_CheckMark] = primaryColor;
         style->Colors[ImGuiCol_SliderGrab] = primaryColorHover;
         style->Colors[ImGuiCol_SliderGrabActive] = primaryColor;
         style->Colors[ImGuiCol_Button] = primaryColor;
