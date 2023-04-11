@@ -15,10 +15,21 @@
 
 ## ⚡️ Features
 - Create your own skin thingy with only one click
-- Poorly written code & bugs :)
 - Customize:
   - [x] Head size
   - [x] Shadow & Light appearance
   
-## 📖 Screenshot
-<img src="https://cdn.discordapp.com/attachments/783393120440156185/1093643905230192780/Capture.PNG" alt="Screenshot" />
+## 🖥 Preview
+<img src="./resources/images/preview.png" alt="Screenshot" />
+
+---
+
+## ⭐️ Made by Jonas#1713
+
+### If you want to say **thank you** or/and support active development of this wonderful project:
+
+- Add a **[GitHub Star](https://github.com/jonas-mtl/Skinify/)** to the project.
+- Share with your friends if you like this project.
+- Add me on Discord for feedback & questions - Jonas#1713 :)
+
+<a href="https://www.buymeacoffee.com/jonas.mtl"><img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=jonas.mtl&button_colour=FFDD00&font_colour=000000&font_family=Cookie&outline_colour=000000&coffee_colour=ffffff" /></a>
