@@ -50,7 +50,7 @@ namespace UI
         style->Colors[ImGuiCol_ButtonActive] = primaryColor;
     }
 
-    bool LoadImage(Image* imageSrc, GLuint* imageOut, uint16_t* widthOut, uint16_t* heightOut)
+    bool LoadImage(Image* imageSrc, GLuint* imageOut, uint64_t* widthOut, uint64_t* heightOut)
     {
         // Create texture identifier
         GLuint imageTexture{};
@@ -87,12 +87,12 @@ namespace UI
         static bool headOverlay{ true };
 
         static GLuint generatedSkinTexture{};
-        static uint16_t generatedSkinTextureWidth{};
-        static uint16_t generatedSkinTextureHeight{};
+        static uint64_t generatedSkinTextureWidth{};
+        static uint64_t generatedSkinTextureHeight{};
 
         static GLuint bannerTexture{};
-        static uint16_t bannerTextureWidth{};
-        static uint16_t bannerTextureHeight{};
+        static uint64_t bannerTextureWidth{};
+        static uint64_t bannerTextureHeight{};
 
         static bool startUp{ true };
         static bool imgLoaded{ false };
@@ -113,8 +113,11 @@ namespace UI
         bool show_window = true;
         ImGui::Begin("##mainWnd", &show_window, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
-        if (startUp) LoadImage(Interface::getBannerImage(), &bannerTexture, &bannerTextureWidth, &bannerTextureHeight);
-        ImGui::Image((void*)(intptr_t)bannerTexture, ImVec2(bannerTextureWidth, bannerTextureHeight));
+        // Draw banner image
+        Image bannerImage = *Interface::getBannerImage();
+
+        if (startUp) LoadImage(&bannerImage, &bannerTexture, &bannerTextureWidth, &bannerTextureHeight);
+        ImGui::Image((void*)(intptr_t)bannerTexture, ImVec2(bannerImage._w, bannerImage._h));
 
         size_t globalLeftMargin{ 23 };
 
@@ -179,15 +182,16 @@ namespace UI
             bool imageStatus = LoadImage(&canvasImage, &generatedSkinTexture, &generatedSkinTextureWidth, &generatedSkinTextureHeight);
             IM_ASSERT(imageStatus);
             strcpy(srcPath, "-");
-
         }
         if (!imgLoaded || !outputCheck) ImGui::EndDisabled();
 
         // display generated image
         if (generatedSkinTexture != 0)
         {
+            std::cout << Skinify::canvas->_w << generatedSkinTextureWidth << std::endl;
+
             ImGui::SetCursorPosX((float)(glfwWinWidth - generatedSkinTextureWidth) / 2 + 8);
-            ImGui::Image((void*)(intptr_t)generatedSkinTexture, ImVec2(generatedSkinTextureWidth, generatedSkinTextureHeight));
+            ImGui::Image((void*)(intptr_t)generatedSkinTexture, ImVec2(Skinify::canvas->_w, Skinify::canvas->_h)); //Todo fix 144p to 64p ???
         }
 
         startUp = false;
