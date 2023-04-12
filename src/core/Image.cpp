@@ -52,16 +52,16 @@ bool Image::write(const char* filename)
 
 	switch(type) {
 		case PNG:
-			success = stbi_write_png(filename, _w, _h, _channels, p_data, _w * _channels);
+			success = stbi_write_png(filename, (int)_w, (int)_h, _channels, p_data, (int)(_w * _channels));
 			break;
 		case BMP:
-			success = stbi_write_bmp(filename, _w, _h, _channels, p_data);
+			success = stbi_write_bmp(filename, (int)_w, (int)_h, _channels, p_data);
 			break;
 		case JPG:
-			success = stbi_write_jpg(filename, _w, _h, _channels, p_data, 100);
+			success = stbi_write_jpg(filename, (int)_w, (int)_h, _channels, p_data, 100);
 			break;
 		case TGA:
-			success = stbi_write_tga(filename, _w, _h, _channels, p_data);
+			success = stbi_write_tga(filename, (int)_w, (int)_h, _channels, p_data);
 			break;
 	}
 
@@ -94,24 +94,24 @@ ImageType Image::getFileType(const char* filename)
 	return PNG;
 }
 
-Image& Image::colorMask(float r, float g, float b) 
+Image& Image::colorMask(float r, float g, float b)
 {
 	if (_channels < 3) {
-		printf("Color mask requires at least 4 channels!");
+		printf("Color mask requires at least 3 channels!");
 	}
 	else {
 		for (int i = 0; i < _size; i += _channels)
 		{
-			p_data[i] *= r;
-			p_data[i + 1] *= g;
-			p_data[i + 2] *= b;
+			p_data[i] *= (uint8_t)r;
+			p_data[i + 1] *= (uint8_t)g;
+			p_data[i + 2] *= (uint8_t)b;
 		}
 	}
 
 	return *this;
 }
 
-Image& Image::colorMask(float r, float g, float b, float a) 
+Image& Image::colorMask(float r, float g, float b, float a)
 {
 	if (_channels < 4) {
 		printf("Color mask requires at least 4 channels!");
@@ -119,17 +119,17 @@ Image& Image::colorMask(float r, float g, float b, float a)
 	else {
 		for (int i = 0; i < _size; i += _channels)
 		{
-			p_data[i] *= r;
-			p_data[i + 1] *= g;
-			p_data[i + 2] *= b;
-			p_data[i + 3] *= a;
+			p_data[i] *= (uint8_t)r;
+			p_data[i + 1] *= (uint8_t)g;
+			p_data[i + 2] *= (uint8_t)b;
+			p_data[i + 3] *= (uint8_t)a;
 		}
 	}
 
 	return *this;
 }
 
-Image& Image::overlay(const Image& source, int x, int y) 
+Image& Image::overlay(const Image& source, uint64_t x, uint64_t y)
 {
 	uint8_t* srcPx = {0};
 	uint8_t* dstPx = {0};
@@ -173,9 +173,9 @@ Image& Image::overlay(const Image& source, int x, int y)
 				{
 					for (int chnl = 0; chnl < _channels; ++chnl)
 					{
-						dstPx[chnl] = (uint8_t)BYTE_BOUND((srcPx[chnl]/255.f * srcAlpha + dstPx[chnl]/255.f * dstAlpha * (1 - srcAlpha)) / outAlpha * 255.f);
+						dstPx[chnl] = (uint8_t)BYTE_BOUND((srcPx[chnl]/(uint8_t)255.f * (uint8_t)srcAlpha + dstPx[chnl]/(uint8_t)255.f * (uint8_t)dstAlpha * (1 - (uint8_t)srcAlpha)) / (uint8_t)outAlpha * (uint8_t)255.f);
 					}
-					if (_channels > 3) { dstPx[3] = (uint8_t)BYTE_BOUND(outAlpha * 255.f); }
+					if (_channels > 3) { dstPx[3] = (uint8_t)BYTE_BOUND((uint8_t)outAlpha * (uint8_t)255.f); }
 				}
 			}
 		}
@@ -215,9 +215,9 @@ Image& Image::crop(uint16_t cx, uint16_t cy, uint16_t cw, uint16_t ch)
 	return *this;
 }
 
-Image& Image::resize(uint32_t sw, uint32_t sh)
+Image& Image::resize(uint64_t sw, uint64_t sh)
 {
-	_size = (uint64_t)sw * sh * _channels;
+	_size = sw * sh * _channels;
 	uint8_t* resizedImage = new uint8_t[_size];
 
 	if (_channels > 3)
@@ -233,11 +233,11 @@ Image& Image::resize(uint32_t sw, uint32_t sh)
 			}
 		}
 
-		stbir_resize_uint8_generic(p_data, _w, _h, _w * _channels, resizedImage, sw, sh, sw * _channels, _channels, 0, STBIR_FLAG_ALPHA_PREMULTIPLIED, STBIR_EDGE_CLAMP, STBIR_FILTER_BOX, STBIR_COLORSPACE_SRGB, nullptr);
+		stbir_resize_uint8_generic(p_data, (int)_w, (int)_h, (int)(_w * _channels), resizedImage, (int)sw, (int)sh, (int)(sw * _channels), _channels, 0, STBIR_FLAG_ALPHA_PREMULTIPLIED, STBIR_EDGE_CLAMP, STBIR_FILTER_BOX, STBIR_COLORSPACE_SRGB, nullptr);
 	}
 	else
 	{
-		stbir_resize_uint8_generic(p_data, _w, _h, _w * _channels, resizedImage, sw, sh, sw * _channels, _channels, 0, 0, STBIR_EDGE_CLAMP, STBIR_FILTER_BOX, STBIR_COLORSPACE_SRGB, nullptr);
+		stbir_resize_uint8_generic(p_data, (int)_w, (int)_h, (int)(_w * _channels), resizedImage, (int)sw, (int)sh, (int)(sw * _channels), _channels, 0, 0, STBIR_EDGE_CLAMP, STBIR_FILTER_BOX, STBIR_COLORSPACE_SRGB, nullptr);
 	}
 	
 	_w = sw;
@@ -252,16 +252,16 @@ Image& Image::resize(uint32_t sw, uint32_t sh)
 
 Image& Image::addShadow(float intensity, uint16_t radius, float opacity)
 {
-	for (int y{ 0 }; y < (_channels * _w) * radius; y += _channels * _w)
+	for (int y{ 0 }; y < (_channels * _w) * radius; y += (int)(_channels * _w))
 	{
 
 		intensity /= radius * opacity;
 		for (int x = 0; x < _w * _channels; x += _channels)
 		{
 
-			p_data[y + x] *= (1 - intensity);
-			p_data[y + x + 1] *= (1 - intensity);
-			p_data[y + x + 2] *= (1 - intensity);
+			p_data[y + x] *= (uint8_t)(1 - intensity);
+			p_data[y + x + 1] *= (uint8_t)(1 - intensity);
+			p_data[y + x + 2] *= (uint8_t)(1 - intensity);
 		}
 	}
 	

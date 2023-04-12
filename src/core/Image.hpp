@@ -33,8 +33,8 @@ struct Image
 	Image& colorMask(float r, float g, float b);
 	Image& colorMask(float r, float g, float b, float a);
 
-	Image& overlay(const Image& source, int x, int y);
-	Image& resize(uint32_t width, uint32_t height);
+	Image& overlay(const Image& source, uint64_t x, uint64_t y);
+	Image& resize(uint64_t width, uint64_t height);
 	Image& addShadow(float intensity, uint16_t radius, float opacity);
 
 	Image& crop(uint16_t cx, uint16_t cy, uint16_t cw, uint16_t ch);

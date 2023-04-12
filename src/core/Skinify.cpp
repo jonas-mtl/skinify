@@ -81,7 +81,8 @@ namespace Skinify
         canvas->overlay(head, (canvas->_w / 2) - (head._w / 2) + skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
         canvas->overlay(headSide, (canvas->_w / 2) - (head._w / 2) - skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
 
-        if (skin_headOverlay) {
+        if (skin_headOverlay)
+        {
             canvas->overlay(headOverlay, (canvas->_w / 2) - (headOverlay._w / 2) + skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
             canvas->overlay(headSideOverlay, (canvas->_w / 2) - (head._w / 2) - skin_headScaleMultiplier - 1, 0 + canvas_yOffset);
         }
@@ -90,15 +91,15 @@ namespace Skinify
 
         canvas->overlay(armR, CENTER(canvas, body) + body._w, head._h + canvas_yOffset);
         canvas->overlay(armL, CENTER(canvas, body) - (body._w / 2), head._h + canvas_yOffset);
-        canvas->overlay(armLSide, CENTER(canvas, body) - armL._w * 1.5, head._h + canvas_yOffset);
+        canvas->overlay(armLSide, static_cast<uint64_t>(CENTER(canvas, body) - armL._w * 1.5), head._h + canvas_yOffset);
 
         canvas->overlay(legR, CENTER(canvas, body) + legR._w, head._h + body._h + canvas_yOffset);
         canvas->overlay(legL, CENTER(canvas, body), head._h + body._h + canvas_yOffset);
         canvas->overlay(legLSide, CENTER(canvas, body) - legL._w / 2, head._h + body._h + canvas_yOffset);
 
-        uint16_t maxDimension = (head._w + headSide._w) > (head._h + (12 * 2)) ? (head._w + headSide._w) : (head._h + (12 * 2));
+        uint64_t maxDimension = (head._w + headSide._w) > (head._h + (uint64_t)(12 * 2)) ? (head._w + headSide._w) : (head._h + (12 * 2));
 
-        canvas->crop((canvas->_w - maxDimension) / 2, 0, maxDimension + (canvas_yOffset * 2), maxDimension + (canvas_yOffset * 2));
+        canvas->crop((uint16_t)(canvas->_w - maxDimension) / 2, 0, (uint16_t)(maxDimension + (canvas_yOffset * 2)), (uint16_t)(maxDimension + (canvas_yOffset * 2)));
 
         canvas->resize(canvas->_w * canvas_upscaleMultiplier, canvas->_h * canvas_upscaleMultiplier);
 
