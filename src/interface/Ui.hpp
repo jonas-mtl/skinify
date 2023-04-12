@@ -9,6 +9,7 @@
 #include "../core/Skinify.hpp"
 #include "ImGui-Custom.hpp"
 
+
 namespace UI 
 {
 	inline ImGuiStyle* style;

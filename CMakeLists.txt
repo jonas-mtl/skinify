@@ -7,6 +7,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
 
+# Icon
+set(APP_ICON_RESOURCE_WINDOWS "${CMAKE_CURRENT_SOURCE_DIR}/resources/icons/appicon.rc")
+
 # Sources
 set(SOURCES 
     "${SRC_DIR}/Main.cpp"
@@ -15,6 +18,7 @@ set(SOURCES
     "${SRC_DIR}/interface/Ui.cpp"
     "${SRC_DIR}/interface/ImGui.cpp"
     "${SRC_DIR}/interface/ImGui-Custom.cpp"
+    ${APP_ICON_RESOURCE_WINDOWS}
 )
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup")
@@ -26,6 +30,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 # Resources
 configure_file(resources/fonts/Roboto-Medium.ttf resources/fonts/Roboto-Medium.ttf COPYONLY)
 configure_file(resources/images/banner.png resources/images/banner.png COPYONLY)
+configure_file(resources/images/icon.png resources/images/icon.png COPYONLY)
 
 # OpenGL
 find_package(OpenGL REQUIRED)
