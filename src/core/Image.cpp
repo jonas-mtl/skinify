@@ -102,9 +102,9 @@ Image& Image::colorMask(float r, float g, float b)
 	else {
 		for (int i = 0; i < _size; i += _channels)
 		{
-			p_data[i] *= (uint8_t)r;
-			p_data[i + 1] *= (uint8_t)g;
-			p_data[i + 2] *= (uint8_t)b;
+			p_data[i] *= r;
+			p_data[i + 1] *= g;
+			p_data[i + 2] *= b;
 		}
 	}
 
@@ -119,10 +119,10 @@ Image& Image::colorMask(float r, float g, float b, float a)
 	else {
 		for (int i = 0; i < _size; i += _channels)
 		{
-			p_data[i] *= (uint8_t)r;
-			p_data[i + 1] *= (uint8_t)g;
-			p_data[i + 2] *= (uint8_t)b;
-			p_data[i + 3] *= (uint8_t)a;
+			p_data[i] *= r;
+			p_data[i + 1] *= g;
+			p_data[i + 2] *= b;
+			p_data[i + 3] *= a;
 		}
 	}
 
@@ -173,9 +173,9 @@ Image& Image::overlay(const Image& source, uint64_t x, uint64_t y)
 				{
 					for (int chnl = 0; chnl < _channels; ++chnl)
 					{
-						dstPx[chnl] = (uint8_t)BYTE_BOUND((srcPx[chnl]/(uint8_t)255.f * (uint8_t)srcAlpha + dstPx[chnl]/(uint8_t)255.f * (uint8_t)dstAlpha * (1 - (uint8_t)srcAlpha)) / (uint8_t)outAlpha * (uint8_t)255.f);
+						dstPx[chnl] = (uint8_t)BYTE_BOUND((srcPx[chnl]/255.f * srcAlpha + dstPx[chnl]/255.f * dstAlpha * (1 - srcAlpha)) / outAlpha * 255.f);
 					}
-					if (_channels > 3) { dstPx[3] = (uint8_t)BYTE_BOUND((uint8_t)outAlpha * (uint8_t)255.f); }
+					if (_channels > 3) { dstPx[3] = (uint8_t)BYTE_BOUND(outAlpha * 255.f); }
 				}
 			}
 		}
@@ -252,6 +252,28 @@ Image& Image::resize(uint64_t sw, uint64_t sh)
 
 Image& Image::addShadow(float intensity, uint16_t radius, float opacity)
 {
+	int r{radius};
+	for (int y{ 0 }; y < (_channels * _w) * radius; y += (int)(_channels * _w))
+	{
+		float shadowMultiplier = 1-((float)r * (1.0f / radius)) * intensity;
+		for (int x = 0; x < _w * _channels; x += _channels)
+		{
+			p_data[y + x] *= shadowMultiplier;
+			p_data[y + x + 1] *= shadowMultiplier;
+			p_data[y + x + 2] *= shadowMultiplier;
+		}
+		--r;
+	}
+	
+	return *this;
+}
+
+/*
+* 
+*  Initial shadow generation
+* 
+Image& Image::addShadow(float intensity, uint16_t radius, float opacity)
+{
 	for (int y{ 0 }; y < (_channels * _w) * radius; y += (int)(_channels * _w))
 	{
 
@@ -259,11 +281,12 @@ Image& Image::addShadow(float intensity, uint16_t radius, float opacity)
 		for (int x = 0; x < _w * _channels; x += _channels)
 		{
 
-			p_data[y + x] *= (uint8_t)(1 - intensity);
-			p_data[y + x + 1] *= (uint8_t)(1 - intensity);
-			p_data[y + x + 2] *= (uint8_t)(1 - intensity);
+			p_data[y + x] *= (1 - intensity);
+			p_data[y + x + 1] *= (1 - intensity);
+			p_data[y + x + 2] *= (1 - intensity);
 		}
 	}
-	
+
 	return *this;
 }
+*/

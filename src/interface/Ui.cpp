@@ -82,7 +82,7 @@ namespace UI
         static int headSize{ 1 };
         static float shadowOpacity{ 0.7f };
         static float lightIntensity{ 0.5f };
-        static int shadowRadius{ 4 };
+        static int shadowRadius{ 5 };
         static bool headOverlay{ true };
 
         static GLuint generatedSkinTexture{};
@@ -173,7 +173,7 @@ namespace UI
         // generate skinified image
         if (ImGui::Button(" - Click here to Skinify - "))
         {
-            Skinify::generate(headSize, shadowOpacity, lightIntensity, shadowRadius, headOverlay, outPath);
+            Skinify::generate(headSize, shadowOpacity / 2, lightIntensity, shadowRadius, headOverlay, outPath);
 
             Image& canvasImage = *Skinify::canvas;
             LoadImage(&canvasImage, &generatedSkinTexture, &generatedSkinTextureSize);
@@ -185,7 +185,7 @@ namespace UI
         if (generatedSkinTexture != 0)
         {
             ImGui::SetCursorPosX((float)(glfwWinWidth - generatedSkinTextureSize.x) / 2 + 8);
-            ImGui::Image((void*)(intptr_t)generatedSkinTexture, ImVec2(Skinify::canvas->_w, Skinify::canvas->_h)); //Todo fix 144p to 64p ???
+            ImGui::Image((void*)(intptr_t)generatedSkinTexture, ImVec2(generatedSkinTextureSize.x, generatedSkinTextureSize.y)); 
         }
 
         startUp = false;
