@@ -2,17 +2,10 @@
 cmake_minimum_required(VERSION 3.8)
 project("Skinify")
 
-
 set(CMAKE_CXX_STANDARD 20)
 
 set(LIB_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")
-
-if(WIN32)
-  if(CMAKE_BUILD_TYPE STREQUAL "Release")
-    add_link_options(/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup)
-  endif()
-endif(WIN32)
 
 # Sources
 set(SOURCES 
@@ -24,7 +17,10 @@ set(SOURCES
     "${SRC_DIR}/interface/ImGui-Custom.cpp"
 )
 
-add_executable(${PROJECT_NAME} ${SOURCES})
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /ENTRY:mainCRTStartup")
+add_executable(${PROJECT_NAME} WIN32  ${SOURCES})
+set_target_properties(${PROJECT_NAME} PROPERTIES LINK_FLAGS_RELEASE "-mwindows /ENTRY:mainCRTStartup /INCREMENTAL:NO")
+
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20)
 
 # Resources
