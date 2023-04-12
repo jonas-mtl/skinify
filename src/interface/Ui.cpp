@@ -33,13 +33,14 @@ namespace UI
 
         style = &ImGui::GetStyle();
 
-        style->FrameRounding = 6;
+        style->FrameRounding = 6; 
 
         ImVec4 primaryColor(157.0f / 255.0f, 126.0f / 255.0f, 81.0f / 255.0f, 1.0f);
         ImVec4 primaryColorHover(185.0f / 255.0f, 149.0f / 255.0f, 96.0f / 255.0f, 1.0f);
         ImVec4 primaryColorHoverBG(185.0f / 255.0f, 149.0f / 255.0f, 96.0f / 255.0f, 0.15f);
 
         style->Colors[ImGuiCol_FrameBg] = ImVec4(0.00f, 0.00f, 0.01f, 1.00f);
+
         style->Colors[ImGuiCol_FrameBgHovered] = primaryColorHoverBG;
         style->Colors[ImGuiCol_FrameBgActive] = primaryColorHoverBG;
         style->Colors[ImGuiCol_CheckMark] = primaryColor;
@@ -48,6 +49,7 @@ namespace UI
         style->Colors[ImGuiCol_Button] = primaryColor;
         style->Colors[ImGuiCol_ButtonHovered] = primaryColorHover;
         style->Colors[ImGuiCol_ButtonActive] = primaryColor;
+        style->Colors[ImGuiCol_TextSelectedBg] = primaryColorHoverBG;
     }
 
     bool LoadImage(Image* imageSrc, GLuint* imageOut, ImVec2* imageSizeOut)
